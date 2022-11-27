@@ -8,6 +8,12 @@
 2. Compare the strengths and weaknesses of the techniques you use
 3. Render your car in the same viewer as in the solar system assignment
 
+### 相关部分GitHub链接
+
+1. 太阳系 https://github.com/xy-cong/SolarSystem
+2. My Dream Car https://github.com/xy-cong/MyCar
+3. Solarsystem_DreamCar https://github.com/xy-cong/Solarsystem_Dreamcar
+
 ### 作业内容
 
 1. 使用 **Polygonal Mesh** 和 **3D-Bezier Surface** 两种基本建模方法构建Dream Car
