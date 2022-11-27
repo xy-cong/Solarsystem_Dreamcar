@@ -22,12 +22,12 @@ private:
     vector<vector<GLint>> fSets;//存放面的三个顶点索引
 };
 
-class Bessel_Obj_Loader{
+class Bezier_Obj_Loader{
 public:
-    Bessel_Obj_Loader();
-    Bessel_Obj_Loader(string filename);
+    Bezier_Obj_Loader();
+    Bezier_Obj_Loader(string filename);
     void init();
-    // ~Bessel_Obj_Loader();
+    // ~Bezier_Obj_Loader();
     void Draw();
 private:
     vector<vector<GLfloat>> vSets;

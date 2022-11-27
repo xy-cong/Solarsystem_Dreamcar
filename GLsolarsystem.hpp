@@ -26,7 +26,7 @@ public:
     GLstars* Stars[Stars_N];
     GLcamera Camera;
     ObjLoader objModel;
-    Bessel_Obj_Loader Bessel_Flag_Obj;
+    Bezier_Obj_Loader Bezier_Flag_Obj;
     GLfloat centerX, centerY, centerZ, upX, upY, upZ;
 };
 

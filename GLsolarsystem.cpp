@@ -33,7 +33,7 @@ GLsolarsystem::GLsolarsystem(){
     // std::cout << "A solarsystem with No Parameters! " << std::endl;
 }
 
-GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat upX, GLfloat upY, GLfloat upZ):Camera(_EYEX_, _EYEY_, _EYEZ_, _VIEW_), objModel("../Car_Obj/Porsche_911_GT2.obj"), Bessel_Flag_Obj("/home/cxy/CG-2022/myObj/Bessel_flag.obj")
+GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat upX, GLfloat upY, GLfloat upZ):Camera(_EYEX_, _EYEY_, _EYEZ_, _VIEW_), objModel("../Car_Obj/Porsche_911_GT2.obj"), Bezier_Flag_Obj("/home/cxy/CG-2022/myObj/Bezier_flag.obj")
 {
     this->centerX = centerX;
     this->centerY = centerY;
@@ -42,9 +42,6 @@ GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, 
     this->upY = upY;
     this->upZ = upZ;
 
-    // objModel = ObjLoader("../Car_Obj/Porsche_911_GT2.obj");
-    // Bessel_Flag_Obj = Bessel_Obj_Loader("/home/cxy/CG-2022/myObj/Bessel_flag.obj");
-    // Bessel_Flag_Obj.init();
     GLfloat RGBcolor[Stars_N][3] = {
         {1.0, 0.0, 0.0}, // 太阳
         {0.2, 0.2, 0.5}, // 水星
@@ -77,7 +74,7 @@ void GLsolarsystem::GLsolarsystem_Update()
         Stars[i]->GL_Update();
     }
     objModel.Draw();//绘制obj模型
-    Bessel_Flag_Obj.Draw();
+    Bezier_Flag_Obj.Draw();
     this->GLsolarsystem_Display(); // 实现双缓冲
 }
 void setLightRes() {
@@ -89,59 +86,20 @@ void setLightRes() {
 
 void GLsolarsystem::GLsolarsystem_Display()
 {
-    
-    // glClearColor(0,0,0,1);
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //RGBA
-    // glMatrixMode(GL_PROJECTION);
-    // glLoadIdentity();
-    // gluPerspective(75.0f, 1.0f, 1.0f, 40000000);
-    // // gluPerspective (45, 1.0, 1, 2000);
-    // glMatrixMode(GL_MODELVIEW);
-    // glLoadIdentity();
-    // glTranslatef(0.0f, 0.0f, -5.0f); 
     glColor3f(1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	// gluPerspective (45, 1.0, 1, 2000);
     gluPerspective(75.0f, 1.0f, 1.0f, 40000000);
     glMatrixMode(GL_MODELVIEW);                            
     glLoadIdentity();                                     
-    glTranslatef(0.0f, 0.0f, -5.0f);                                                              
-    // setLightRes();  
-    int degree = 90;
-    float r=1.0f;
-    float c = 3.1415926 / 180.0f;
-    // gluLookAt(r*cos(c*degree), 0, r*sin(c*degree), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f); 
+    glTranslatef(0.0f, 0.0f, -5.0f);       
     gluLookAt(this->Camera.EYEX, this->Camera.EYEY, this->Camera.EYEZ, this->centerX, this->centerY, this->centerZ, this->upX, this->upY, this->upZ);
     for(int i = 0; i<Stars_N; i++){
         this->Stars[i]->GLDraw();
     }
-    objModel.Draw();//绘制obj模型
-    Bessel_Flag_Obj.Draw();
-    
-    // glColor3f(1.0, 1.0, 1.0);
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// glMatrixMode(GL_PROJECTION);
-	// glLoadIdentity();
-	// gluPerspective (45, 1.0, 1, 2000);
-    // glMatrixMode(GL_MODELVIEW);                            
-    // glLoadIdentity();                                     
-    // glTranslatef(0.0f, 0.0f, -5.0f);                                                              
-    // setLightRes();
-    // int degree = 90;
-    // float r=1.0f;
-    // float c = 3.1415926 / 180.0f;
-    // gluLookAt(eyeX, eyeY, eyeZ, lookX, lookY, lookZ, 0, 1, 0);
-    // gluLookAt(r*cos(c*degree), 0, r*sin(c*degree), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    // gluLookAt(0, 0, 1, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-    // glPushMatrix();
-    // // L_tree.Draw();
-    // objModel.Draw();//绘制obj模型
-    // Bessel_Flag_Obj.Draw();
-    
-    // glPopMatrix();
-    // glutSwapBuffers();
+    objModel.Draw();
+    Bezier_Flag_Obj.Draw();
 }
 
 void GLsolarsystem::GLsolarsystem_Keyboard(unsigned char key,int x,int y)

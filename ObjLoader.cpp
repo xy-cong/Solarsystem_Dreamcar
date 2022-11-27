@@ -151,12 +151,12 @@ void ObjLoader::Draw(){
 //     // max_x: 0.980019, max_y: 0.665978, max_z: 2.2003
 // }
 
-Bessel_Obj_Loader::Bessel_Obj_Loader(){
+Bezier_Obj_Loader::Bezier_Obj_Loader(){
 
 }
 
 
-Bessel_Obj_Loader::Bessel_Obj_Loader(string filename){
+Bezier_Obj_Loader::Bezier_Obj_Loader(string filename){
     std::ifstream file(filename);
     std::string line;
     
@@ -195,7 +195,7 @@ Bessel_Obj_Loader::Bessel_Obj_Loader(string filename){
     }
     file.close();  
 }
-void Bessel_Obj_Loader::Draw(){
+void Bezier_Obj_Loader::Draw(){
     glColor3f(1.0, 0.0, 0.0);
     glPushMatrix();
     glEvalMesh2(GL_FILL, 0, 20, 0, 20);
@@ -203,7 +203,7 @@ void Bessel_Obj_Loader::Draw(){
     glutSwapBuffers();
 }
 
-void Bessel_Obj_Loader::init(){
+void Bezier_Obj_Loader::init(){
     glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4, 0, 1, 12, 4, &ctrlPoints[0][0][0]);
     glEnable(GL_MAP2_VERTEX_3);
     glMapGrid2f(20, 0.0, 1.0, 20, 0.0, 1.0);

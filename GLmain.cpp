@@ -32,7 +32,7 @@ void init() {
     glShadeModel(GL_SMOOTH);
     setLightRes();
     glEnable(GL_DEPTH_TEST);
-    My_SolarSystem.Bessel_Flag_Obj.init();
+    My_SolarSystem.Bezier_Flag_Obj.init();
 }
 
 void reshape(int width, int height)
@@ -44,37 +44,11 @@ void reshape(int width, int height)
     glMatrixMode(GL_MODELVIEW);
 }
 
-//移动鼠标360观察模型
-void moseMove(int button, int state, int x, int y)
-{
-    if (state == GLUT_DOWN) {
-        oldPosX = x; oldPosY = y;
-    }
-}
-
-void changeViewPoint(int x, int y)
-{
-    int temp = x - oldPosX, temp_y = y - oldPosY;
-    degree += temp;
-    eyeY += temp_y/100.0;
-    oldPosX = x;
-    oldPosY = y;
-}
-
 void myIdle()
 {
     glutPostRedisplay();
 }
 
-void keyboard(unsigned char key, int x, int y)
-{
-    cout << key << endl;
-   switch (key) {
-	  case 27:			// Esc - Exit the program
-		 exit(0);
-		 break;
-   }
-}
 
 
 void My_SolarSystem_Display()
