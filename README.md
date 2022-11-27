@@ -113,15 +113,15 @@
 
    1. **整体效果图**
 
-      <img src="/home/cxy/图片/car_0.png" alt="car_0" style="zoom:75%;" />
+      <img src="Image/car_0.png" alt="car_0" style="zoom:75%;" />
 
    2. **Polygonal Mesh 车体细节**
 
-      <img src="/home/cxy/图片/car_1.png" alt="car_1" style="zoom:75%;" />
+      <img src="Image/car_1.png" alt="car_1" style="zoom:75%;" />
 
    3. **Bezier Surface 车顶细节**
 
-      <img src="/home/cxy/图片/car_2.png" alt="car_2" style="zoom:75%;" />
+      <img src="Image/car_2.png" alt="car_2" style="zoom:75%;" />
 
    4. **需要特别注意的是，为了更方便、更清晰地展现表面建模效果，加入了点光源**
 
@@ -139,15 +139,15 @@
 
       1. **整体效果图**
 
-         <img src="/home/cxy/图片/car_3.png" alt="car_3" style="zoom:75%;" />
+         <img src="Image/car_3.png" alt="car_3" style="zoom:75%;" />
 
       2. **Polygonal Mesh 细节**
 
-         <img src="/home/cxy/图片/car_4.png" alt="car_4" style="zoom:75%;" />
+         <img src="Image/car_4.png" alt="car_4" style="zoom:75%;" />
 
       3. **Bezier Surface 细节**
 
-         <img src="/home/cxy/图片/car_5.png" alt="car_5" style="zoom:75%;" />
+         <img src="Image/car_5.png" alt="car_5" style="zoom:75%;" />
 
 3. **至此，完成了两种建模方法对Dream Car进行表面建模实现。**
 
@@ -170,11 +170,11 @@
 
    - 太阳系+Dream Car —— 未开光源：
 
-     <img src="/home/cxy/图片/1.png" alt="1" style="zoom:75%;" />
+     <img src="Image/1.png" alt="1" style="zoom:75%;" />
 
    - 太阳系+Dream Car —— 打开光源：
 
-     <img src="/home/cxy/图片/2.png" alt="2" style="zoom:75%;" />
+     <img src="Image/2.png" alt="2" style="zoom:75%;" />
 
 6. 有无光照的分析同上Dream Car部分，为了表示清楚集合表面重建信息，最好引入光源。
 
