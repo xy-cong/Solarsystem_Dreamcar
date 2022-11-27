@@ -204,8 +204,6 @@ void Bessel_Obj_Loader::Draw(){
 }
 
 void Bessel_Obj_Loader::init(){
-    // glClearColor(0.0, 0.0, 0.0, 1.0);
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4, 0, 1, 12, 4, &ctrlPoints[0][0][0]);
     glEnable(GL_MAP2_VERTEX_3);
     glMapGrid2f(20, 0.0, 1.0, 20, 0.0, 1.0);

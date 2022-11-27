@@ -4,9 +4,6 @@
 #include "GLsolarsystem.hpp"
 
 #include "ObjLoader.hpp"
-// string filePath = "../Car_Obj/Porsche_911_GT2.obj";
-// ObjLoader objModel = ObjLoader(filePath);
-// Bessel_Obj_Loader Bessel_Flag_Obj = Bessel_Obj_Loader("/home/cxy/CG-2022/hw6/Bessel_flag.obj");
 static float c = 3.1415926 / 180.0f;
 static float r = 1.0f;
 static int degree = 90;
@@ -27,23 +24,6 @@ using namespace std;
 
 GLsolarsystem My_SolarSystem(_CenterX_, _CenterY_, _CenterZ_, _upX_, _upY_, _upZ_);
 
-// -------------------------------------------------------------------------- //
-//安置光源
-// void setLightRes() {
-//     GLfloat lightPosition[] = { 0.0f, 0.0f, 1.0f, 0.0f };
-//     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-//     glEnable(GL_LIGHTING); //启用光源
-//     glEnable(GL_LIGHT0);   //使用指定灯光
-// }
-
-// //初始化
-// void init() {
-//     glEnable(GL_DEPTH_TEST);
-//     glShadeModel(GL_SMOOTH);
-//     setLightRes();
-//     glEnable(GL_DEPTH_TEST);
-//     // Bessel_Flag_Obj.init();
-// }
 void init() {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1280, 1280);
@@ -96,7 +76,6 @@ void keyboard(unsigned char key, int x, int y)
    }
 }
 
-// -------------------------------------------------------------------------- //
 
 void My_SolarSystem_Display()
 {
@@ -126,43 +105,14 @@ void MY_SolarSystem_Mouse_Move(int x, int y)
 }
 
 int main(int argc, char*  argv[]) {
-    // fieldOfView = 45;
-	// eyeX = 250;
-	// eyeY = 0;
-	// eyeZ = 100;
-	// lookX = 0;
-	// lookY = 50;
-	// lookZ = 0;
     glutInit(&argc, argv);
     init();
-    // glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    // glutInitWindowPosition(WINDOW_POS_X, WINDOW_POS_Y);
-    // glutInitWindowSize(WIDTH, HEIGHT);
-    // glutCreateWindow("SolarSystem created by XiaoyanCong");
     glutDisplayFunc(My_SolarSystem_Display);
     glutIdleFunc(My_SolarSystem_Update);
     glutKeyboardFunc(My_SolarSystem_Update_Keyboard);
 	glutMouseFunc(MY_SolarSystem_Mouse_Hit);
 	glutMotionFunc(MY_SolarSystem_Mouse_Move);
     glutReshapeFunc(reshape);
-    // glutKeyboardFunc(keyboard);
-    // glutMouseFunc(moseMove);
-    // glutMotionFunc(changeViewPoint);
     glutMainLoop();
     return 0;
 }
-
-
-// int main(int argc, char* argv[])
-// {
-//     glutInit(&argc, argv);
-//     init();
-//     glutDisplayFunc(My_SolarSystem_Display);
-//     // glutReshapeFunc(reshape);
-//     glutKeyboardFunc(keyboard);
-//     glutMouseFunc(moseMove);
-//     glutMotionFunc(changeViewPoint);
-//     glutIdleFunc(My_SolarSystem_Update);
-//     glutMainLoop();
-//     return 0;
-// }
