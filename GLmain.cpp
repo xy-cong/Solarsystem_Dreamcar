@@ -22,12 +22,22 @@ using namespace std;
 #define _upY_ 1
 #define _upZ_ 0
 
+void setLightRes() {
+	//光源设置在太阳中心
+    // GLfloat sun_light_position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    // 光源在 上方
+	GLfloat sun_light_position[] = { 0.0f, 100.0f, 0.0f, 0.0f };
+	glLightfv(GL_LIGHT0, GL_POSITION, sun_light_position);
+    glEnable(GL_LIGHTING); //启用光源
+    glEnable(GL_LIGHT0);   //使用指定灯光
+}
+
 GLsolarsystem My_SolarSystem(_CenterX_, _CenterY_, _CenterZ_, _upX_, _upY_, _upZ_);
 
 void init() {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1280, 1280);
-    glutCreateWindow("ObjLoader");
+    glutCreateWindow("ObjLoader"); 
     glEnable(GL_DEPTH_TEST);
     glShadeModel(GL_SMOOTH);
     setLightRes();

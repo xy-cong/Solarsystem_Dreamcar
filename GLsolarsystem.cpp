@@ -55,16 +55,16 @@ GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, 
         {0.5, 0.5, 1} // 海王星
     };
 
-    this->Stars[Sun] = new GLsun(SUN_SELF_RADIUS, 0, SUN_SELF_SPEED, 0, NULL, RGBcolor[Sun]);
-    this->Stars[Mercury] = new GLplanet(MER_SELF_RADIUS, MER_AROUND_RADIUS, MER_SELF_SPEED, MER_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mercury]);
-    this->Stars[Venus] = new GLplanet(VEN_SELF_RADIUS, VEN_AROUND_RADIUS, VEN_SELF_SPEED, VEN_AROUND_SPEED, this->Stars[Sun], RGBcolor[Venus]);
-    this->Stars[Earth] = new GLplanet(EAR_SELF_RADIUS, EAR_AROUND_RADIUS, EAR_SELF_SPEED, EAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Earth]);
-    this->Stars[Moon] = new GLplanet(MOO_SELF_RADIUS, MOO_AROUND_RADIUS, MOO_SELF_SPEED, MOO_AROUND_SPEED, this->Stars[Earth], RGBcolor[Moon]);
-    this->Stars[Mars] = new GLplanet(MAR_SELF_RADIUS, MAR_AROUND_RADIUS, MAR_SELF_SPEED, MAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mars]);
-    this->Stars[Jupiter] = new GLplanet(JUP_SELF_RADIUS, JUP_AROUND_RADIUS, JUP_SELF_SPEED, JUP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Jupiter]);
-    this->Stars[Saturn] = new GLplanet(SAT_SELF_RADIUS, SAT_AROUND_RADIUS, SAT_SELF_SPEED, SAT_AROUND_SPEED, this->Stars[Sun], RGBcolor[Saturn]);
-    this->Stars[Uranus] = new GLplanet(URA_SELF_RADIUS, URA_AROUND_RADIUS, URA_SELF_SPEED, URA_AROUND_SPEED, this->Stars[Sun], RGBcolor[Uranus]);
-    this->Stars[Neptune] = new GLplanet(NEP_SELF_RADIUS, NEP_AROUND_RADIUS, NEP_SELF_SPEED, NEP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Neptune]);
+    this->Stars[Sun] = new GLsun(SUN_SELF_RADIUS, 0, SUN_SELF_SPEED, 0, NULL, RGBcolor[Sun], "Sun");
+    this->Stars[Mercury] = new GLplanet(MER_SELF_RADIUS, MER_AROUND_RADIUS, MER_SELF_SPEED, MER_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mercury], "Mercury");
+    this->Stars[Venus] = new GLplanet(VEN_SELF_RADIUS, VEN_AROUND_RADIUS, VEN_SELF_SPEED, VEN_AROUND_SPEED, this->Stars[Sun], RGBcolor[Venus], "Venus");
+    this->Stars[Earth] = new GLplanet(EAR_SELF_RADIUS, EAR_AROUND_RADIUS, EAR_SELF_SPEED, EAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Earth], "Earth");
+    this->Stars[Moon] = new GLplanet(MOO_SELF_RADIUS, MOO_AROUND_RADIUS, MOO_SELF_SPEED, MOO_AROUND_SPEED, this->Stars[Earth], RGBcolor[Moon], "Moon");
+    this->Stars[Mars] = new GLplanet(MAR_SELF_RADIUS, MAR_AROUND_RADIUS, MAR_SELF_SPEED, MAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mars], "Mars");
+    this->Stars[Jupiter] = new GLplanet(JUP_SELF_RADIUS, JUP_AROUND_RADIUS, JUP_SELF_SPEED, JUP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Jupiter], "Jupiter");
+    this->Stars[Saturn] = new GLplanet(SAT_SELF_RADIUS, SAT_AROUND_RADIUS, SAT_SELF_SPEED, SAT_AROUND_SPEED, this->Stars[Sun], RGBcolor[Saturn], "Saturn");
+    this->Stars[Uranus] = new GLplanet(URA_SELF_RADIUS, URA_AROUND_RADIUS, URA_SELF_SPEED, URA_AROUND_SPEED, this->Stars[Sun], RGBcolor[Uranus], "Uranus");
+    this->Stars[Neptune] = new GLplanet(NEP_SELF_RADIUS, NEP_AROUND_RADIUS, NEP_SELF_SPEED, NEP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Neptune], "Neptune");
 
 }
 
@@ -77,12 +77,18 @@ void GLsolarsystem::GLsolarsystem_Update()
     Bezier_Flag_Obj.Draw();
     this->GLsolarsystem_Display(); // 实现双缓冲
 }
-void setLightRes() {
-    GLfloat lightPosition[] = { 0.0f, 1000.0f, 1.0f, 0.0f };
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    glEnable(GL_LIGHTING); //启用光源
-    glEnable(GL_LIGHT0);   //使用指定灯光
-}
+// void setLightRes() {
+//     // GLfloat lightPosition[] = { 0.0f, 1000.0f, 1.0f, 0.0f };
+//     // GLfloat lightPosition[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+//     // glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+//     // glEnable(GL_LIGHTING); //启用光源
+//     // glEnable(GL_LIGHT0);   //使用指定灯光
+// 	//光源设置在太阳中心
+// 	GLfloat sun_light_position[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+// 	glLightfv(GL_LIGHT0, GL_POSITION, sun_light_position);
+//     glEnable(GL_LIGHTING); //启用光源
+//     glEnable(GL_LIGHT0);   //使用指定灯光
+// }
 
 void GLsolarsystem::GLsolarsystem_Display()
 {

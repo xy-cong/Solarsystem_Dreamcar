@@ -2,11 +2,16 @@
 
 ### 3200105085 丛箫言
 
-### 作业要求
+### 11.27 作业要求
 
 1. Program using 2 modeling techniques in class to build the shape of  the dream car
 2. Compare the strengths and weaknesses of the techniques you use
 3. Render your car in the same viewer as in the solar system assignment
+
+### 12.4 作业要求
+
+1. Add simple diffuse + specular (Phong or Cook\-Torrance) models in your existing solar system
+2. The sun is treated as a single, distant point light source
 
 ### 相关部分GitHub链接
 
@@ -186,6 +191,47 @@
 
 7. 本系统依然支持原来太阳系的所有功能，详见 https://github.com/xy-cong/SolarSystem
 
+8. **引入Diffuse & Specular models**，并设置**点光源**
+
+   1. 当点光源位于太阳：`GLfloat sun_light_position[] = { 0.0f, 0.0f, 0.0f, 1.0f };`  此时四元组的w设置为1.0表示为该光源为定点光源，位于(0,0, 0.0, 0.0)，但会随着观察方向改变而改变。
+
+      <img src="Image/3.png" alt="2" style="zoom:75%;" />
+
+   2. 当点光源位于整个太阳系上方：`GLfloat sun_light_position[] = { 0.0f, 100.0f, 0.0f, 0.0f };`  
+
+      <img src="Image/4.png" alt="2" style="zoom:75%;" />
+
+   3. 可以发现，二者有很大的区别，可以明显地感知到光源位置的变化。
+
+   4. 同时，对每个星球都设置了漫反射和镜面反射，镜面反射均设置为白色， 而漫反射则定义了不同的颜色，即图中所展示的不同星球所展现出来的直观的颜色。
+
+      ```c++
+      // 以定义太阳的光照属性为例
+      GLfloat sun_mat_ambient[]  = {0.0f, 0.0f, 0.0f, 1.0f};  //定义材质的环境光颜色
+      GLfloat sun_mat_diffuse[]  = {1.0f, 1.0f, 1.0f, 1.0f};  //定义材质的漫反射光颜色
+      GLfloat sun_mat_specular[] = {0.0f, 0.0f, 0.0f, 1.0f};  //定义材质的镜面反射光颜色
+      GLfloat sun_mat_emission[] = {0.5f, 0.5f, 0.0f, 1.0f};  //定义材质的辐射广颜色
+      GLfloat sun_mat_shininess = 0.0f;
+      glMaterialfv(GL_FRONT, GL_AMBIENT, sun_mat_ambient);
+      glMaterialfv(GL_FRONT, GL_DIFFUSE, sun_mat_diffuse);
+      glMaterialfv(GL_FRONT, GL_SPECULAR, sun_mat_specular);
+      glMaterialfv(GL_FRONT, GL_EMISSION, sun_mat_emission);
+      glMaterialf(GL_FRONT, GL_SHININESS, sun_mat_shininess);
+      ```
+
+      ```c++
+      // 以定义水星的光照属性为例
+      GLfloat earth_mat_ambient[] = { 1.0f, 1.0f, 1.0f, 1.0f };  
+      GLfloat earth_mat_diffuse[] = { 0.0f, 0.5f, 1.0f, 1.0f }; 
+      GLfloat earth_mat_specular[] = { 0.8f, 0.8f, 0.8f, 0.2f };  
+      GLfloat earth_mat_emission[] = { 0.0f, 0.0f, 0.0f, 1.0f };  
+      GLfloat earth_mat_shininess = 5.0f;
+      glMaterialfv(GL_FRONT, GL_AMBIENT, earth_mat_ambient);
+      glMaterialfv(GL_FRONT, GL_DIFFUSE, earth_mat_diffuse);
+      glMaterialfv(GL_FRONT, GL_SPECULAR, earth_mat_specular);
+      glMaterialfv(GL_FRONT, GL_EMISSION, earth_mat_emission);
+      glMaterialf(GL_FRONT, GL_SHININESS, earth_mat_shininess);
+      ```
 
 
 ### 使用方法
