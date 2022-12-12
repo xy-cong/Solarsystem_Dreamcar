@@ -13,6 +13,11 @@
 1. Add simple diffuse + specular (Phong or Cook\-Torrance) models in your existing solar system
 2. The sun is treated as a single, distant point light source
 
+### 12.14 作业要求
+
+1. Add textures to your solar system
+2. **Bonus 10%: Implement a skybox**
+
 ### 相关部分GitHub链接
 
 1. 太阳系 https://github.com/xy-cong/SolarSystem
@@ -233,6 +238,165 @@
       glMaterialf(GL_FRONT, GL_SHININESS, earth_mat_shininess);
       ```
 
+### 12.14 作业内容
+
+1. Add textures to your solar system
+
+   1. 找到了太阳系中各个星球共10张texture map，均存放在文件夹texture中。
+
+      <img src="texture/earth.bmp" alt="earth" style="zoom:25%;" /><img src="texture/jupiter.bmp" alt="jupiter" style="zoom:25%;" /><img src="texture/mars.bmp" alt="mars" style="zoom:25%;" />
+
+   2. 程序逻辑
+
+      实现texture mapping简单来说可以总结为四个步骤
+
+      1. 创建纹理对象，并为它装载一个纹理
+      2. 确定纹理如何应用到每个像素上
+      3. 启用纹理贴图功能
+      4. 绘制场景，提供纹理坐标和几何图形坐标
+
+      接下来将详细介绍本代码的实现思路：
+
+      - 首先，为了方便进行texture mapping，对每一个星球都改变了原来的球体生成方式，从原来的`glutSolidSphere(this->selfRadius, 100, 100);`改为如今的密集`glVertex3f()`空间采点生成球体，同时在生成空间点信息的同时，得到每一个空间点对应的纹理坐标，将空间点坐标和纹理作用用一个结构体组织起来。
+
+        ```c++
+        typedef struct
+        {
+            double X;
+            double Y;
+            double Z;
+            double U;
+            double V;
+        } VERTICES;
+        ```
+
+        并通过`VERTICES VERTEX_STARS[Stars_N][VertexCount];`定义了Stars_N个星球，每一个星球都有VertexCount个结构点，存储着空间点信息和纹理坐标。
+
+      - 每一个结构点的生成采用如下方式
+
+        ```c++
+        VERTEX_STARS[this->idx][n].X = R * sin((a) / 180 * PI) * sin((b) / 180 * PI);
+        VERTEX_STARS[this->idx][n].Y = R * cos((a) / 180 * PI) * sin((b) / 180 * PI);
+        VERTEX_STARS[this->idx][n].Z = R * cos((b) / 180 * PI);
+        len = sqrt(VERTEX_STARS[this->idx][n].X * VERTEX_STARS[this->idx][n].X + VERTEX_STARS[this->idx][n].Y * VERTEX_STARS[this->idx][n].Y + VERTEX_STARS[this->idx][n].Z * VERTEX_STARS[this->idx][n].Z);
+        VERTEX_STARS[this->idx][n].V = (2 * b) / 360;
+        VERTEX_STARS[this->idx][n].U = (a) / 360;
+        len2 = sqrt(VERTEX_STARS[this->idx][n].V * VERTEX_STARS[this->idx][n].V + VERTEX_STARS[this->idx][n].U * VERTEX_STARS[this->idx][n].U);
+        VERTEX_STARS[this->idx][n].V /= len2;
+        VERTEX_STARS[this->idx][n].U /= len2;
+        ```
+
+      - 在每一次构造一个新星球的时候，都在类GLstars的初始化函数里将纹理贴图texture mapping（bmp格式）读取为data（unsigned char * ）格式，并创建一个纹理对象，并绑定&生成相关参数。
+
+        ```c++
+        // 转换texture mapping
+        int width, height;
+        unsigned char * data;
+        FILE * file;
+        file = fopen( filename, "rb" );
+        if ( file == NULL ) return;
+        width = 2048;
+        height = 1024;
+        data = (unsigned char *)malloc( width * height * 3 );
+        fread( data, width * height * 3, 1, file );
+        fclose( file );
+        for(int i = 0; i < width * height ; ++i)
+        {
+        int index = i*3;
+        unsigned char B,R;
+        B = data[index];
+        R = data[index+2];
+        data[index] = R;
+        data[index+2] = B;
+        }
+        
+        // 相关设置
+        glGenTextures( 1, &texture ); // 生成对象texture的索引
+        glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,GL_MODULATE);
+        glBindTexture( GL_TEXTURE_2D, texture );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_REPEAT );
+        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_REPEAT );
+        gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height,GL_RGB, GL_UNSIGNED_BYTE, data ); 
+        ```
+
+      - 接下来，每一次程序调用display函数的时候，都通过`DisplaySphere (GLuint texture)`随着生成星球同步生成其纹理贴图。
+
+        ```c++
+        void GLstars::DisplaySphere (GLuint texture)
+        {
+        
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+            int b;
+            glBindTexture (GL_TEXTURE_2D, texture);
+            glBegin (GL_TRIANGLE_STRIP);
+        
+            // assigning the values to the triangle strips
+            // assigning values for the sfirst half of the sphere on the strip
+            for ( b = 0; b <VertexCount; b++)
+            {
+                glTexCoord2f (VERTEX_STARS[this->idx][b].U, VERTEX_STARS[this->idx][b].V);
+                glVertex3f (VERTEX_STARS[this->idx][b].X, VERTEX_STARS[this->idx][b].Y, -VERTEX_STARS[this->idx][b].Z);
+            }
+            // assigning values for the other half of the sphere on the triangle strip
+            for ( b = 0; b <VertexCount; b++)
+            {
+                glTexCoord2f (VERTEX_STARS[this->idx][b].U, -VERTEX_STARS[this->idx][b].V);
+                glVertex3f (VERTEX_STARS[this->idx][b].X, VERTEX_STARS[this->idx][b].Y, VERTEX_STARS[this->idx][b].Z);
+            }
+            glEnd();
+        }
+        ```
+
+        绑定纹理对象后，通过遍历每一个star所对应的结构点，通过其纹理坐标索引得到该点的texture，然后通过其空间点信息，生成带有该纹理的空间点。如此，结合纹理信息和几何信息即可绘制得到带纹理的Star。
+
+   3. Texture mapping 效果
+
+      <img src="/home/cxy/CG-2022/Solarsystem_Dreamcar/Image/5.png" alt="5" style="zoom:75%;" />
+
+      <img src="/home/cxy/CG-2022/Solarsystem_Dreamcar/Image/6.png" alt="6" style="zoom:75%;" />
+
+2. **Bonus 10%: Implement a skybox**
+
+Skybox的原理是如果想要渲染非常远的物体，比如该任务下的太阳系远处的星空背景，微小的视角变化不会给背景带来太明显的改变，可以采用定义一个box的方法，程序预先定义好用于生成box的六个面，然后类似于纹理贴图的方式生成足够大，足够远的带纹理的box，即为skybox。
+
+- 本文采用如下的skybox图，例
+
+  <img src="texture/sky_front.bmp" alt="sky_front" style="zoom:50%;" /><img src="texture/sky_left.bmp" alt="sky_left" style="zoom:50%;" />
+
+- 程序设计思路
+
+  定义`GLSkyBox.hpp`和`GLSkyBox.cpp`文件实现所需要的skybox功能。实现如下功能：
+
+  - skybox随着观察视角的变化而要微小变化，通过类成员变量POS_X, POS_Y, POS_Z实现。
+  - skybox的size为构造时即确定的值。
+  - 实现box的六个面的纹理贴图。
+
+  首先，类似上述对星球的texture mapping，在构造的时候创建好对应六张照片的纹理对象，然后在主程序的display函数反复调用中不断进行skybox的display，render的方式和star类似，采用纹理+几何的方式，在vertex上定义对应的texture。
+
+  ```c++
+  glBindTexture(GL_TEXTURE_2D, this->texture_id[0]);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0, 0); glVertex3f(-size, size, -size);
+  glTexCoord2f(1, 0); glVertex3f(size, size, -size);
+  glTexCoord2f(1, 1); glVertex3f(size, -size, -size);
+  glTexCoord2f(0, 1); glVertex3f(-size, -size, -size);
+  glEnd();
+  ```
+
+  遍历六个纹理对象，以GL_QUADS的方式生成带纹理的六个box面，即为最后的skybox。
+
+- SkyBox效果
+
+  <img src="Image/7.png" alt="7" style="zoom:50%;" />
+
+  由于光照为微弱的点光源，导致Skybox显示不是特别明显，但仔细观察可以看出其星空背景。
+
+- 疑问：
+
+  - **为什么屏幕上会产生不规则的纹路？**
 
 ### 使用方法
 

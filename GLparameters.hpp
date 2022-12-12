@@ -7,7 +7,7 @@
 #define WIDTH 1280
 #define HEIGHT 1280
 
-#define SUN_SELF_RADIUS 48.74
+#define SUN_SELF_RADIUS 48.74 
 #define MER_SELF_RADIUS  7.32
 #define VEN_SELF_RADIUS 18.15
 #define EAR_SELF_RADIUS 19.13
@@ -38,16 +38,6 @@
 #define URA_AROUND_SPEED 3066.4
 #define NEP_AROUND_SPEED 6014.8
 
-// #define MER_AROUND_SPEED   43.5
-// #define VEN_AROUND_SPEED  112.5
-// #define EAR_AROUND_SPEED  182.5
-// #define MOO_AROUND_SPEED   15.0
-// #define MAR_AROUND_SPEED  343.5
-// #define JUP_AROUND_SPEED 649.2
-// #define SAT_AROUND_SPEED 1612.8
-// #define URA_AROUND_SPEED 1088.2
-// #define NEP_AROUND_SPEED 3007.4
-
 #define SUN_SELF_SPEED 3
 #define MER_SELF_SPEED 3
 #define VEN_SELF_SPEED 3
@@ -58,5 +48,17 @@
 #define SAT_SELF_SPEED 3
 #define URA_SELF_SPEED 3
 #define NEP_SELF_SPEED 3
+
+#define PI 3.1415926535
+#define Stars_N 10
+
+#define _EYEX_ 0
+#define _EYEY_ (700)
+#define _EYEZ_ (700)
+#define _VIEW_ 0
+
+#define SPACE 5
+
+#define SKY_SIZE 10000
 
 #endif

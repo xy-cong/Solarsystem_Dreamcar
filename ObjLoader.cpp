@@ -4,7 +4,7 @@
 
 ObjLoader::ObjLoader(){
 
-}
+} 
 
 
 // ObjLoader::ObjLoader(string filename) : max_x(-100.0), max_y(-100.0),  max_z(-100.0)

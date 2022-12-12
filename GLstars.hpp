@@ -1,13 +1,20 @@
 #ifndef __GLstars__
 #define __GLstars__
 
-#include <GL/glut.h>
+#include <GL/glut.h> 
+#include "GLparameters.hpp"
 #include <iostream>
 #include <string> 
+
+
+
+enum STARS
+{
+  SUN, MER, VEN, EAR, MOO, MAR, JUP, SAT, URA, NEP  
+};
 using namespace std;
 
 #define STEP 1
-#define PI 3.1415926535
 
 class GLstars{
 public:
@@ -15,14 +22,20 @@ public:
     GLfloat selfSpeed, aroundSpeed;
     GLfloat RGBAColor[4] = {1.0f,1.0f,1.0f,1.0f};
     GLfloat selfAlpha, aroundAlpha;
+    GLint idx;
+    GLint GLstars_texture_idx;
 
     GLstars* father;
 
     string self_Name;
     GLstars();
-    GLstars(GLfloat selfRadius, GLfloat aroundRadius, GLfloat selfSpeed, GLfloat aroundSpeed, GLstars* father, string Name);
+    GLstars(GLfloat selfRadius, GLfloat aroundRadius, GLfloat selfSpeed, GLfloat aroundSpeed, GLstars* father, string Name, const char* TexturePath, GLint index);
     void GLstars_Draw();
     void GL_stars_material();
+
+    void CreateSphere (double R);
+    void DisplaySphere (GLuint texture);
+    void LoadTextureRAW( const char * filename );
 
     void Material_Sun();
     void Material_Mercury();
@@ -43,7 +56,7 @@ public:
 class GLplanet: public GLstars{
 public:
     GLplanet();
-    GLplanet(GLfloat selfRadius, GLfloat aroundRadius, GLfloat selfSpeed, GLfloat aroundSpeed, GLstars* father, GLfloat rgbColor[3], string Name);
+    GLplanet(GLfloat selfRadius, GLfloat aroundRadius, GLfloat selfSpeed, GLfloat aroundSpeed, GLstars* father, GLfloat rgbColor[3], string Name, const char* TexturePath, GLint index);
     void GLplanet_Draw();
     virtual void GLDraw();
     virtual ~GLplanet();
@@ -52,7 +65,7 @@ public:
 class GLsun: public GLplanet{
 public:
     GLsun();
-    GLsun(GLfloat selfRadius, GLfloat aroundRadius, GLfloat selfSpeed, GLfloat aroundSpeed, GLstars* father, GLfloat rgbColor[3], string Name);
+    GLsun(GLfloat selfRadius, GLfloat aroundRadius, GLfloat selfSpeed, GLfloat aroundSpeed, GLstars* father, GLfloat rgbColor[3], string Name, const char* TexturePath, GLint index);
     void GLsun_Draw();
     virtual void GLDraw();
     virtual ~GLsun();

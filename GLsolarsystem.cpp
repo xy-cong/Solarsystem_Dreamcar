@@ -1,20 +1,15 @@
 
 #include "GLsolarsystem.hpp"
-#include "GLparameters.hpp"
 #include "ObjLoader.hpp"
 #include <iostream>
 #include <cmath>
-
-#define _EYEX_ 0
-#define _EYEY_ (700)
-#define _EYEZ_ (700)
-#define _VIEW_ 0
 
 int hit_pos_x, hit_pos_y;
 
 int move_pos_x, move_pos_y;
 
 int button_kind;
+
 
 /*
 idx:
@@ -29,11 +24,38 @@ idx:
 8 -- 天王星
 9 -- 海王星
 */
+
 GLsolarsystem::GLsolarsystem(){
     // std::cout << "A solarsystem with No Parameters! " << std::endl;
 }
 
-GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat upX, GLfloat upY, GLfloat upZ):Camera(_EYEX_, _EYEY_, _EYEZ_, _VIEW_), objModel("../Car_Obj/Porsche_911_GT2.obj"), Bezier_Flag_Obj("/home/cxy/CG-2022/myObj/Bezier_flag.obj")
+const char * Texture_Path[Stars_N] = 
+{
+    "texture/sun.bmp",
+    "texture/mercury.bmp",
+    "texture/venus.bmp",
+    "texture/earth.bmp",
+    "texture/moon.bmp",
+    "texture/mars.bmp",
+    "texture/jupiter.bmp",
+    "texture/saturn.bmp",
+    "texture/uranus.bmp",
+    "/texture/neptune.bmp",
+};
+
+GLSkyBox *skybox;
+const char * SkyBox_Texture_Path[6]{
+    "texture/sky_top.bmp",
+    "texture/sky_bottom.bmp",
+    "texture/sky_left.bmp",
+    "texture/sky_right.bmp",
+    "texture/sky_front.bmp",
+    "texture/sky_back.bmp",
+};
+
+
+GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat upX, GLfloat upY, GLfloat upZ)
+:Camera(_EYEX_, _EYEY_, _EYEZ_, _VIEW_), objModel("../Car_Obj/Porsche_911_GT2.obj"), Bezier_Flag_Obj("/home/cxy/CG-2022/myObj/Bezier_flag.obj")
 {
     this->centerX = centerX;
     this->centerY = centerY;
@@ -41,7 +63,9 @@ GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, 
     this->upX = upX;
     this->upY = upY;
     this->upZ = upZ;
+}
 
+void GLsolarsystem::init(){
     GLfloat RGBcolor[Stars_N][3] = {
         {1.0, 0.0, 0.0}, // 太阳
         {0.2, 0.2, 0.5}, // 水星
@@ -54,28 +78,53 @@ GLsolarsystem::GLsolarsystem(GLfloat centerX, GLfloat centerY, GLfloat centerZ, 
         {0.4, 0.4, 0.4}, // 天王星
         {0.5, 0.5, 1} // 海王星
     };
+    this->Stars[Sun] = new GLsun(SUN_SELF_RADIUS, 0, SUN_SELF_SPEED, 0, NULL, RGBcolor[Sun], "Sun", Texture_Path[0], 0); 
+    this->Stars[Mercury] = new GLplanet(MER_SELF_RADIUS, MER_AROUND_RADIUS, MER_SELF_SPEED, MER_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mercury], "Mercury", Texture_Path[1], 1);
+    this->Stars[Venus] = new GLplanet(VEN_SELF_RADIUS, VEN_AROUND_RADIUS, VEN_SELF_SPEED, VEN_AROUND_SPEED, this->Stars[Sun], RGBcolor[Venus], "Venus", Texture_Path[2], 2);
+    this->Stars[Earth] = new GLplanet(EAR_SELF_RADIUS, EAR_AROUND_RADIUS, EAR_SELF_SPEED, EAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Earth], "Earth", Texture_Path[3], 3);
+    this->Stars[Moon] = new GLplanet(MOO_SELF_RADIUS, MOO_AROUND_RADIUS, MOO_SELF_SPEED, MOO_AROUND_SPEED, this->Stars[Earth], RGBcolor[Moon], "Moon", Texture_Path[4], 4);
+    this->Stars[Mars] = new GLplanet(MAR_SELF_RADIUS, MAR_AROUND_RADIUS, MAR_SELF_SPEED, MAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mars], "Mars", Texture_Path[5], 5);
+    this->Stars[Jupiter] = new GLplanet(JUP_SELF_RADIUS, JUP_AROUND_RADIUS, JUP_SELF_SPEED, JUP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Jupiter], "Jupiter", Texture_Path[6], 6);
+    this->Stars[Saturn] = new GLplanet(SAT_SELF_RADIUS, SAT_AROUND_RADIUS, SAT_SELF_SPEED, SAT_AROUND_SPEED, this->Stars[Sun], RGBcolor[Saturn], "Saturn", Texture_Path[7], 7);
+    this->Stars[Uranus] = new GLplanet(URA_SELF_RADIUS, URA_AROUND_RADIUS, URA_SELF_SPEED, URA_AROUND_SPEED, this->Stars[Sun], RGBcolor[Uranus], "Uranus", Texture_Path[8], 8);
+    this->Stars[Neptune] = new GLplanet(NEP_SELF_RADIUS, NEP_AROUND_RADIUS, NEP_SELF_SPEED, NEP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Neptune], "Neptune", Texture_Path[9], 9);
 
-    this->Stars[Sun] = new GLsun(SUN_SELF_RADIUS, 0, SUN_SELF_SPEED, 0, NULL, RGBcolor[Sun], "Sun");
-    this->Stars[Mercury] = new GLplanet(MER_SELF_RADIUS, MER_AROUND_RADIUS, MER_SELF_SPEED, MER_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mercury], "Mercury");
-    this->Stars[Venus] = new GLplanet(VEN_SELF_RADIUS, VEN_AROUND_RADIUS, VEN_SELF_SPEED, VEN_AROUND_SPEED, this->Stars[Sun], RGBcolor[Venus], "Venus");
-    this->Stars[Earth] = new GLplanet(EAR_SELF_RADIUS, EAR_AROUND_RADIUS, EAR_SELF_SPEED, EAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Earth], "Earth");
-    this->Stars[Moon] = new GLplanet(MOO_SELF_RADIUS, MOO_AROUND_RADIUS, MOO_SELF_SPEED, MOO_AROUND_SPEED, this->Stars[Earth], RGBcolor[Moon], "Moon");
-    this->Stars[Mars] = new GLplanet(MAR_SELF_RADIUS, MAR_AROUND_RADIUS, MAR_SELF_SPEED, MAR_AROUND_SPEED, this->Stars[Sun], RGBcolor[Mars], "Mars");
-    this->Stars[Jupiter] = new GLplanet(JUP_SELF_RADIUS, JUP_AROUND_RADIUS, JUP_SELF_SPEED, JUP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Jupiter], "Jupiter");
-    this->Stars[Saturn] = new GLplanet(SAT_SELF_RADIUS, SAT_AROUND_RADIUS, SAT_SELF_SPEED, SAT_AROUND_SPEED, this->Stars[Sun], RGBcolor[Saturn], "Saturn");
-    this->Stars[Uranus] = new GLplanet(URA_SELF_RADIUS, URA_AROUND_RADIUS, URA_SELF_SPEED, URA_AROUND_SPEED, this->Stars[Sun], RGBcolor[Uranus], "Uranus");
-    this->Stars[Neptune] = new GLplanet(NEP_SELF_RADIUS, NEP_AROUND_RADIUS, NEP_SELF_SPEED, NEP_AROUND_SPEED, this->Stars[Sun], RGBcolor[Neptune], "Neptune");
+    skybox = new GLSkyBox(this->Camera.EYEX, this->Camera.EYEY, this->Camera.EYEZ, SkyBox_Texture_Path, SKY_SIZE);
+}
 
+void GLSetMateria(GLfloat ambient[], GLfloat diffuse[], GLfloat specular[])
+{
+	glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);// 设置环境光成分
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);// 设置镜面反射光成分
+	glMaterialfv(GL_FRONT, GL_SPECULAR, specular);// 设置漫反射光成分
+}
+GLfloat mat_ambient_box[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat mat_diffuse_box[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+GLfloat mat_specular_box[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+float rotateAngle = 0.0f;
+
+void Draw_Sky()
+{
+	GLSetMateria(mat_ambient_box, mat_diffuse_box, mat_specular_box);
+
+	glPushMatrix(); 
+	glTranslatef(skybox->POS_X, skybox->POS_Y, skybox->POS_Z);
+	glRotatef(rotateAngle, 0.0f, 1.0f, 0.0f);
+	glEnable(GL_TEXTURE_2D);
+	skybox->DrawScence(); // 绘制天空盒
+	rotateAngle -= 0.01f;
+	if (rotateAngle < -360)
+		rotateAngle = 0;
+	glPopMatrix();
+    glFlush();
 }
 
 void GLsolarsystem::GLsolarsystem_Update()
 {
+    glClearColor(1.0, 1.0, 1.0, 0.0);
     for (int i = 0; i<Stars_N; i++){
         Stars[i]->GL_Update();
     }
-    objModel.Draw();//绘制obj模型
-    Bezier_Flag_Obj.Draw();
-    this->GLsolarsystem_Display(); // 实现双缓冲
 }
 // void setLightRes() {
 //     // GLfloat lightPosition[] = { 0.0f, 1000.0f, 1.0f, 0.0f };
@@ -101,11 +150,18 @@ void GLsolarsystem::GLsolarsystem_Display()
     glLoadIdentity();                                     
     glTranslatef(0.0f, 0.0f, -5.0f);       
     gluLookAt(this->Camera.EYEX, this->Camera.EYEY, this->Camera.EYEZ, this->centerX, this->centerY, this->centerZ, this->upX, this->upY, this->upZ);
+    glEnable(GL_TEXTURE_2D);
+
+    Draw_Sky();
+
     for(int i = 0; i<Stars_N; i++){
+        glPushMatrix();
         this->Stars[i]->GLDraw();
+        glPopMatrix();
     }
     objModel.Draw();
     Bezier_Flag_Obj.Draw();
+    
 }
 
 void GLsolarsystem::GLsolarsystem_Keyboard(unsigned char key,int x,int y)
@@ -195,7 +251,6 @@ void GLsolarsystem::GLsolarsystem_Mousemove(int x, int y)
         this->upZ = upX*sin(theta_Y) + upZ*cos(theta_Y);
     }
         
-    
 }
 
 GLsolarsystem::~GLsolarsystem(){

@@ -4,12 +4,12 @@
 #include "GLstars.hpp"
 #include "GLcamera.hpp"
 #include "ObjLoader.hpp"
-#define Stars_N 10
+#include "GLparameters.hpp"
+#include "GLSkyBox.hpp"
+
 enum {Sun, Mercury, Venus, Earth, Moon,
     Mars, Jupiter, Saturn, Uranus, Neptune
 };
-
-void setLightRes();
 
 class GLsolarsystem{
 public:
@@ -20,6 +20,7 @@ public:
     void GLsolarsystem_Keyboard(unsigned char key,int x,int y);
     void GLsolarsystem_Mousehit(int button, int state, int x, int y);
     void GLsolarsystem_Mousemove(int x, int y);
+    void init();
     ~GLsolarsystem();
 
 
