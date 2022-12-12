@@ -354,9 +354,9 @@
 
    3. Texture mapping 效果
 
-      <img src="/home/cxy/CG-2022/Solarsystem_Dreamcar/Image/5.png" alt="5" style="zoom:75%;" />
+      <img src="Image/5.png" alt="5" style="zoom:75%;" />
 
-      <img src="/home/cxy/CG-2022/Solarsystem_Dreamcar/Image/6.png" alt="6" style="zoom:75%;" />
+      <img src="Image/6.png" alt="6" style="zoom:75%;" />
 
 2. **Bonus 10%: Implement a skybox**
 
